@@ -9,10 +9,10 @@
     function showPreview(){
       if(config["editor"]){
         var data = { "page[content_hiki]" : config["editor"].getData(),
-                     "authenticity_token":root.parents("form").find("input[name=authenticity_token]").val() }
+                     "authenticity_token":root.parents("form").find("input[name=authenticity_token]").val() };
       }else{
         var data = root.parents("form").serializeArray();
-        data = jQuery.grep(data, function(o){return o.name != "_method"});
+        data = jQuery.grep(data, function(o){return o.name != "_method";});
       }
 
       try{
@@ -23,7 +23,7 @@
               find("ul li.show").hide().end().
               find("ul li.hide").fadeIn("fast");
         });
-      }catch(e){ console.log(e) };
+      }catch(e){ console.log(e); };
       return false;
     }
 
@@ -77,7 +77,7 @@
         jQuery(".page form").find("input[type=submit]").disable().end().find("span.notice").hide();
       },
       getData : function(ignore){ return this.textarea.val(); },
-      needToSave : function(){ return this.getData() != this.originalContent },
+        needToSave : function(){ return this.getData() != this.originalContent; },
       insert : function(elem){
         var ins  = (elem.get(0).tagName == "IMG") ? "{{image('"+ elem.attr('src') +"')}}"
                                                   : "[[" + elem.text() + "|" + elem.attr("href") + "]]";
@@ -110,31 +110,31 @@
         editor.BasePath = basePath;
         editor.ReplaceTextarea() ;
 
-        this.api = function(){ return FCKeditorAPI.GetInstance(editorName) };
+        this.api = function(){ return FCKeditorAPI.GetInstance(editorName); };
       },
-      setData : function(content){ this.api().SetData(content, true) },
-      getData : function(force){ return this.api().GetData(force) },
+      setData : function(content){ this.api().SetData(content, true); },
+      getData : function(force){ return this.api().GetData(force); },
       needToSave: function(){ return this.api().IsDirty() && (jQuery.trim( this.api().GetHTML(true) ).length > 0); },
       insert : function(elem){ this.api().InsertHtml(elem.wrap('<span></span>').parent().html()); }
-    }
+    };
 
-    function SwitchableEditor(){ this.initialize.apply(this, arguments) };
+    function SwitchableEditor(){ this.initialize.apply(this, arguments); };
     SwitchableEditor.prototype = {
       initialize : function(currentFormatType, richEditorOpt, hikiEditorOpt, config){
         this.richEditorOpt = richEditorOpt;
         this.hikiEditorOpt = hikiEditorOpt;
         this.submit_to_save = config["submit_to_save"];
         if(!jQuery.isFunction(currentFormatType)){
-          this.currentFormatType = function(){ return currentFormatType };
+          this.currentFormatType = function(){ return currentFormatType; };
         }else{
           this.currentFormatType = currentFormatType;
         }
       },
 
-      setData : function(content){ return this.editor().setData(content) },
-      getData : function(force){ return this.editor().getData(force) },
-      needToSave: function(){ return this.editor().needToSave() },
-      insert : function(elem){ this.editor().insert(elem) },
+      setData : function(content){ return this.editor().setData(content); },
+      getData : function(force){ return this.editor().getData(force); },
+      needToSave: function(){ return this.editor().needToSave(); },
+      insert : function(elem){ this.editor().insert(elem); },
 
       editor : function(){
         if(this.currentFormatType() == "hiki"){
@@ -204,13 +204,13 @@
     editorApi.editor(); // boot with initial state;
 
     if(config["submit_to_save"]){
-      jQuery("input[type=radio][name='page[format_type]']").change(function(){ editorApi.editor() });
+      jQuery("input[type=radio][name='page[format_type]']").change(function(){ editorApi.editor(); });
     } else {
       addDynamicSave();
     };
 
     jQuery(config["linkPalette"]["selector"] || "#linkPalette").linkPalette(
-      jQuery.extend({}, config["linkPalette"], {"callback":function(elem){ editorApi.insert(elem) }})
+      jQuery.extend({}, config["linkPalette"], {"callback":function(elem){ editorApi.insert(elem); }})
     );
     return jQuery(this);
   };
@@ -223,7 +223,7 @@
       self.empty();
       jQuery.each(data, function(num, l){
         var label = l["label_index"];
-        var li = proto.clone()
+        var li = proto.clone();
         var ident = "page_label_index_id_" + label.id;
         li.find("input[type=radio]").attr("id", ident).attr("value", label.id).end().
            find("label").attr("for", ident).
@@ -246,7 +246,7 @@
       }
       ul.empty();
 
-      jQuery.each(errors, function(){ jQuery("<li>").text(this.toString()).appendTo(ul) });
+      jQuery.each(errors, function(){ jQuery("<li>").text(this.toString()).appendTo(ul); });
     }
 
     function update(td, _req, _stat){
@@ -256,7 +256,7 @@
       return false;
     }
 
-    jQuery.each(table.find("td.inplace-edit"), function(){jQuery(this).aresInplaceEditor({callback:update}) });
+    jQuery.each(table.find("td.inplace-edit"), function(){jQuery(this).aresInplaceEditor({callback:update}); });
   };
 
   jQuery.fn.aresInplaceEditor = function(config){
@@ -264,7 +264,7 @@
     var form = self.find("div.edit form");
     var messages = jQuery.extend({
                      sending: "Sending..."
-                   },config["messages"])
+                   },config["messages"]);
 
     function showIPE(){
       self.find("div.edit").show().siblings("div.show").hide();
@@ -284,12 +284,12 @@
           beforeSend: function(){
             self.find(".indicator").show();
             self.find("span.ipe-cancel").hide();
-            if(messages["sending"]){ form.find("input[type=submit]").val( messages["sending"]) };
+              if(messages["sending"]){ form.find("input[type=submit]").val( messages["sending"]); };
           },
           complete: function(req, status){
             self.find(".indicator").hide();
             self.find("span.ipe-cancel").show();
-            if(messages["sending"]){ form.find("input[type=submit]").val( submitLabel ) };
+            if(messages["sending"]){ form.find("input[type=submit]").val( submitLabel ); };
             hideIPE();
             return config["callback"](self, req, status);
           }
@@ -311,21 +311,21 @@
   };
 })(jQuery);
 
-application = function(){}
+application = function(){};
 application.headOK = function(xhr) {
   return xhr.responseText.match(/\s*/) &&
          xhr.status >= 200 &&
-         xhr.status <  300
-}
+         xhr.status <  300;
+};
 
 application.post = function(form, parameters) {
   var paramFromForm = {
     url  : form.attr("action") + ".js",
     type : "POST",
     data : form.serializeArray()
-  }
+  };
   jQuery.ajax(jQuery.extend(paramFromForm, parameters));
-}
+};
 
 application.callbacks = {
   pageDisplaynameEditor : function(root, req, stat){
@@ -369,8 +369,9 @@ application.callbacks = {
           appendTo(tbody);
         });
         tbody.find("tr:first-child").effect("highlight", {}, 2*1000);
+        return true;
       });
-    }
+    };
   }
 };
 
